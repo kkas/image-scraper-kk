@@ -27,3 +27,7 @@ export FLASK_APP=image-scraper.py
 flask run
 ```
 
+* Try something like this.
+```
+curl -sS -w '\n' -X POST 'http://127.0.0.1:5000/instagram/url' --data '{"url": "https://www.instagram.com/p/<change_here>"}' -H 'Content-type:application/json'
+```
