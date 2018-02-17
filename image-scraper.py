@@ -1,5 +1,4 @@
 import re, requests, json
-from urllib.parse import urlparse
 
 from bs4 import BeautifulSoup
 
@@ -33,7 +32,7 @@ def instagram():
         return 'error'
 
     # Retrieve the contents by making GET request to the URL.
-    content = do_GET(target_url)
+    content = do_get(target_url)
 
     # Parse the content and retrieve the expected url for the picture.
     picture_url = retrieve_picture_url(target_url, content)
@@ -42,7 +41,7 @@ def instagram():
                    status='SUCCESS')
 
 
-def do_GET(url):
+def do_get(url):
     """Make a GET request to the url."""
     return requests.get(url).text
 
