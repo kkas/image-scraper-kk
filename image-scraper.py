@@ -1,4 +1,5 @@
 import re, requests, json
+import sys
 
 from bs4 import BeautifulSoup
 
@@ -37,7 +38,16 @@ def instagram():
     # Parse the content and retrieve the expected url for the picture.
     picture_url = retrieve_picture_url(target_url, content)
 
-    return jsonify(url=picture_url,
+    # Modify the url to avoid Instagram's "URL signature expired" problem.
+    # See the following post for more details.
+    # https://stackoverflow.com/questions/47668014/instagram-feed-api-media-url-shows-url-signature-expired
+    fixed_picture_url = make_permanent_url(picture_url)
+
+    print("original_url: {}".format(picture_url), file=sys.stderr)
+    print("url: {}".format(fixed_picture_url), file=sys.stderr)
+
+    return jsonify(original_url=picture_url,
+                   url=fixed_picture_url,
                    status='SUCCESS')
 
 
@@ -45,6 +55,10 @@ def do_get(url):
     """Make a GET request to the url."""
     return requests.get(url).text
 
+
+def make_permanent_url(url):
+    """Modify the original url of a picture on Instagram to avoid the 'URL signature expired' problem. """
+    return re.sub(r'/vp.*\/.{32}\/.{8}\/', '/', url)
 
 def retrieve_picture_url(url, content):
     soup = BeautifulSoup(content, "html.parser")
