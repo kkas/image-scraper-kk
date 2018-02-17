@@ -72,3 +72,7 @@ def extract_json(script_text):
 def extract_json_part(script_text):
     """Remove any unnecessary parts and extract only the json part."""
     return re.sub(r'(?:window._sharedData = |;$)', "", script_text)
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=8000)
