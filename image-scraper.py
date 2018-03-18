@@ -30,7 +30,9 @@ def instagram():
 
     # Check if the url is for instagram.
     if not is_instagram_url(target_url):
-        return 'error'
+        return jsonify(original_url=target_url,
+                       url=None,
+                       status='FAILED')
 
     # Retrieve the contents by making GET request to the URL.
     content = do_get(target_url)
