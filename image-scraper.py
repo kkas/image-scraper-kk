@@ -6,6 +6,8 @@ import sys
 from bs4 import BeautifulSoup
 
 from flask import Flask, request, jsonify
+from flask import render_template
+
 app = Flask(__name__)
 
 
@@ -18,6 +20,11 @@ def hello():
     return 'hello'
 
 
+@app.route('/instagram/url', methods=['GET'])
+def get_instagram():
+    return render_template('html/instagram.html', title='instagram url')
+
+
 @app.route('/instagram/url', methods=['POST'])
 def instagram():
     """
@@ -26,9 +33,13 @@ def instagram():
         ex.
             {"url" : "https://www.instagram.com/p/FNfeaionfead/"}
     """
-    # Ignore the content type. The request should contain application/json.
-    json_obj = request.get_json(force=True)
-    target_url = json_obj['url']
+    # The request must contain the mediatype of application/json or application/*+json
+    # in order to be determined as json.
+    if request.is_json:
+        json_obj = request.get_json()
+        target_url = json_obj['url']
+    else:
+        target_url = request.form.get('url')
 
     # Check if the url is for instagram.
     if not is_instagram_url(target_url):
