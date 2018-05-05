@@ -61,7 +61,7 @@ def instagram():
     # Modify the url to avoid Instagram's "URL signature expired" problem.
     # See the following post for more details.
     # https://stackoverflow.com/questions/47668014/instagram-feed-api-media-url-shows-url-signature-expired
-    image_resources = make_permanent_urls(image_resources)
+    # image_resources = make_permanent_urls(image_resources)
 
     print("image_resources(after): {}".format(image_resources), file=sys.stderr)
 
